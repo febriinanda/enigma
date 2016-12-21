@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Stand Monitor</title>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="/semantic/dist/semantic.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css" />
+    <style>
+    .container{
+      margin-top: 5%;
+    }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="ui two column centered grid">
+        <div class="column">
+          <form class="ui large form">
+            <div class="ui stacked segment">
+              <div class="inline fields">
+                <label for="type">Pilih salah satu:</label>
+                <div class="field">
+                  <div class="ui radio checkbox">
+                    <input type="radio" name="type" checked="" tabindex="0" class="hidden">
+                    <label>No. Telp.</label>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="ui radio checkbox">
+                    <input type="radio" name="type" tabindex="0" class="hidden">
+                    <label>No. Internet</label>
+                  </div>
+                </div>
+              </div>
+              <div class="field">
+                <label>No Telp. / Internet</label>
+                <div class="ui input">
+                  <input id="m" type="text" name="id_pelanggan" placeholder="+62 442 500" />
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="four column centered row" id="info_tagihan">
+          <div class="column">
+            <div class="ui raised segment">
+              <h3 class="ui blue header">Info tagihan</h3>
+              <table class="ui very basic table">
+                <tbody>
+                  <tr>
+                    <td>
+                      No
+                    </td>
+                    <td>
+                      <span id="resp_no">xxxxxxxxx</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Nama
+                    </td>
+                    <td>
+                      <span id="resp_name">xxxxxxxxx</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Tagihan
+                    </td>
+                    <td>
+                      <span id="resp_bill">xxxxxxxxx</span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>
+                Bayar tagihan?
+              </p>
+
+                  <button id="confirmBtn" class="ui blue button">Ya</button>
+                  <button id="cancelBtn" class="ui red button">Tidak</button>
+
+
+            </div>
+          </div>
+          <div class="column">
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <
+
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+
+    <script>
+      var socket = io();
+      socket.temp = {};
+      $('form').submit(function(){
+        socket.emit('query info', $('#m').val());
+        $('#m').val('');
+        return false;
+      });
+
+      socket.on('query result', function(resp){
+        $("#info_tagihan").show();
+        console.log("Result", resp);
+        $("#resp_no").text(resp.no);
+        $("#resp_name").text(resp.name);
+        $("#resp_bill").text(resp.bill);
+        socket.temp = resp;
+      });
+
+      $(document).ready(function(){
+        $("#info_tagihan").hide();
+        $('.ui.radio.checkbox').checkbox();
+
+        $('#confirmBtn').click(function(){
+          $("#info_tagihan").hide();
+          socket.emit('user confirm',socket.temp);
+        });
+
+        $('#cancelBtn').click(function(){
+          $("#info_tagihan").hide();
+        });
+      });
+    </script>
+  </body>
+</html>

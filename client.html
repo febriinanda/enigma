@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Client</title>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="/semantic/dist/semantic.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css" />
+    <style>
+    .container{
+      margin-top: 2%;
+      margin-left: 1%;
+      }
+      </style>
+  </head>
+  <body>
+    <div class="container">
+      <h3 class="ui blue header">Prototype Realtime Notification</h3>
+      <div class="ui two column grid">
+        <div class="column">
+          <div id="messages"></div>
+        </div>
+      </div>
+    </div>
+
+
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script>
+      var socket = io();
+      socket.on('user accept', function(msg){
+        console.log("msg", msg);
+        var date = new Date();
+        $('#messages')
+        .append($('<div>').addClass("ui message")
+          .append($('<i>').addClass("close icon"))
+          .append($('<div>').addClass("header").text("No: "+ msg.no))
+          .append($('<p>').text("Name: "+msg.name+", Tagihan: "+msg.bill))
+        );
+      });
+
+      $(document).ready(function(){
+        $('.close').click(function() {
+            $(this).closest('.message').transition('fade');
+          })
+        ;
+      });
+    </script>
+  </body>
+</html>
