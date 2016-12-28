@@ -33,7 +33,7 @@
     .footer {
       position: absolute;
       right: 0;
-      bottom: 0;
+      bottom: 12px;
       left: 0;
     }
 
@@ -41,24 +41,20 @@
       position: relative;
     }
     .overlayImg{
-      position: absolute;
-      left: 75%;
-      top: 50%;
+      position: relative;
+      left: 81%;
+      /* top: 50%; */
       z-index: 9;
-      height: 200px;
+      height: 100px;
     }
     .footerImg{
       position: absolute;
-      right: 0;
       bottom: 0;
-      left: 0;
       z-index: 1;
-      height: 100px;
+      height: 71px;
       width: 100%;
       margin-bottom: 20px;
     }
-
-
     </style>
   </head>
   <body>
@@ -99,6 +95,9 @@
               <div class="ui input">
                 <input id="m" type="text" name="id_pelanggan" placeholder="+62 442 500" />
               </div>
+            </div>
+            <div class="field">
+              <button class="ui right floated button">CEK</button>
             </div>
           </form>
           <div class="four column centered row" id="info_tagihan">
