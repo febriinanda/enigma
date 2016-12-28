@@ -100,47 +100,6 @@
               <button class="ui right floated button">CEK</button>
             </div>
           </form>
-          <div class="four column centered row" id="info_tagihan">
-            <div class="column">
-              <h3 class="ui blue header">Info tagihan</h3>
-              <table class="ui very basic table">
-                <tbody>
-                  <tr>
-                    <td>
-                      No
-                    </td>
-                    <td>
-                      <span id="resp_no">xxxxxxxxx</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Nama
-                    </td>
-                    <td>
-                      <span id="resp_name">xxxxxxxxx</span>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      Tagihan
-                    </td>
-                    <td>
-                      <span id="resp_bill">xxxxxxxxx</span>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <p>
-                Bayar tagihan?
-              </p>
-                  <button id="confirmBtn" class="ui blue button">Ya</button>
-                  <button id="cancelBtn" class="ui red button">Tidak</button>
-            </div>
-            <div class="column">
-
-            </div>
-          </div>
         </div>
       </div>
       <div class="footer">
@@ -151,16 +110,68 @@
       </div>
 
     </div>
+    <div class="ui tiny modal">
+      <i class="close icon"></i>
+      <div class="ui blue header">
+        Info tagihan
+      </div>
+      <div class="content">
+        <div class="description">
+          <table class="ui very basic table">
+            <tbody>
+              <tr>
+                <td>
+                  No
+                </td>
+                <td>
+                  <span id="resp_no">xxxxxxxxx</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Nama
+                </td>
+                <td>
+                  <span id="resp_name">xxxxxxxxx</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Tagihan
+                </td>
+                <td>
+                  <span id="resp_bill">xxxxxxxxx</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+            <h4>Bayar tagihan?</h4>
+          </p>
+        </div>
+      </div>
+      <div class="actions">
+        <div id="confirmBtn" class="ui blue approve button">
+          Ya
+        </div>
+        <div class="ui red deny button">
+          Tidak
+        </div>
+      </div>
+    </div>
 
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 
     <script>
       var socket = io();
       socket.temp = {};
+
       $('form').submit(function(){
         socket.emit('query info', $('#m').val());
         $('#m').val('');
+        openModal();
         return false;
+
       });
 
       socket.on('query result', function(resp){
@@ -184,7 +195,12 @@
         $('#cancelBtn').click(function(){
           $("#info_tagihan").hide();
         });
+
       });
+
+      function openModal(){
+        $('.ui.modal').modal('show');
+      }
     </script>
   </body>
 </html>
