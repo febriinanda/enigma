@@ -8,43 +8,100 @@
     <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css" />
     <style>
     .container{
-      margin-top: 5%;
+      margin-top: 2%;
+    }
+
+    p.prime{
+      font-size: 2.5rem;
+      font-weight: bold;
+      text-align: center;
+      margin: 0 0 0.7em;
+      line-height: 0em;
+    }
+
+    p.secondary{
+      font-size: 2rem;
+      text-align: center;
+      margin: 0 0 0.7em;
+      line-height: 1.25em;
+    }
+
+    html, body{
+      overflow:hidden;
+    }
+
+    .footer {
+      position: absolute;
+      right: 0;
+      bottom: 12px;
+      left: 0;
+    }
+
+    .containerFooter{
+      position: relative;
+    }
+    .overlayImg{
+      position: relative;
+      left: 81%;
+      /* top: 50%; */
+      z-index: 9;
+      height: 100px;
+    }
+    .footerImg{
+      position: absolute;
+      bottom: 0;
+      z-index: -1;
+      height: 71px;
+      width: 100%;
+      margin-bottom: 20px;
     }
     </style>
   </head>
   <body>
     <div class="container">
-      <div class="ui two column centered grid">
-        <div class="column">
+      <div class="ui three column centered grid">
+        <div class="three wide column">
+          <img class="ui fluid image" src="/images/Indihome_Fiber.png">
+        </div>
+        <div class="eight wide column">
+          <p class="secondary">Selamat Datang di</p>
+          <p class="prime">Aplikasi Drive-Thru Payment</p>
+          <p class="secondary">PT. Telkom Indonesia wilayah Bengkulu</p>
+        </div>
+        <div class="two wide column">
+          <img class="ui fluid image" src="/images/logo_telkom.png">
+        </div>
+      </div>
+      <div class="ui centered grid">
+        <div class="twelve wide column">
           <form class="ui large form">
-            <div class="ui stacked segment">
-              <div class="inline fields">
-                <label for="type">Pilih salah satu:</label>
-                <div class="field">
-                  <div class="ui radio checkbox">
-                    <input type="radio" name="type" checked="" tabindex="0" class="hidden">
-                    <label>No. Telp.</label>
-                  </div>
-                </div>
-                <div class="field">
-                  <div class="ui radio checkbox">
-                    <input type="radio" name="type" tabindex="0" class="hidden">
-                    <label>No. Internet</label>
-                  </div>
+            <div class="inline fields">
+              <label for="type">Pilih salah satu:</label>
+              <div class="field">
+                <div class="ui radio checkbox">
+                  <input type="radio" name="type" checked="" tabindex="0" class="hidden">
+                  <label>No. Telepon</label>
                 </div>
               </div>
               <div class="field">
-                <label>No Telp. / Internet</label>
-                <div class="ui input">
-                  <input id="m" type="text" name="id_pelanggan" placeholder="+62 442 500" />
+                <div class="ui radio checkbox">
+                  <input type="radio" name="type" tabindex="0" class="hidden">
+                  <label>No. Internet</label>
                 </div>
               </div>
             </div>
+            <div class="field">
+              <label>No. Telepon / Internet:</label>
+              <div class="ui input">
+                <input id="m" type="text" name="id_pelanggan" placeholder="+62 442 500" />
+              </div>
+            </div>
+            <div class="field">
+              <button class="ui right floated button">CEK</button>
+            </div>
           </form>
-        </div>
-        <div class="four column centered row" id="info_tagihan">
-          <div class="column">
-            <div class="ui raised segment">
+          <div class="four column centered row" id="info_tagihan">
+            <div class="column">
               <h3 class="ui blue header">Info tagihan</h3>
               <table class="ui very basic table">
                 <tbody>
@@ -77,20 +134,23 @@
               <p>
                 Bayar tagihan?
               </p>
-
                   <button id="confirmBtn" class="ui blue button">Ya</button>
                   <button id="cancelBtn" class="ui red button">Tidak</button>
-
+            </div>
+            <div class="column">
 
             </div>
           </div>
-          <div class="column">
-
-          </div>
         </div>
       </div>
+      <div class="footer">
+        <div style="position:relative">
+          <img class="footerImg" src="/images/kawung vs besurek.png">
+          <img class="overlayImg" src="/images/my-indihome.png">
+        </div>
+      </div>
+
     </div>
-    <
 
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 
