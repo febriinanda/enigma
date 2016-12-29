@@ -2,8 +2,11 @@ var app = require('express')();
 var express = require('express');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-
 var query = require('./query')
+
+// Register static files here
+app.use("/semantic",express.static(__dirname + "/semantic"));
+app.use("/images",express.static(__dirname + "/images"));
 
 app.use("/semantic",express.static(__dirname + "/semantic"));
 app.use('/query', query)
