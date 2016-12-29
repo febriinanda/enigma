@@ -55,6 +55,47 @@
       width: 100%;
       margin-bottom: 20px;
     }
+
+    .bold{
+      font-weight: bold;
+    }
+    /* Tiny Modal Width */
+
+    @media only screen and (max-width: 767px) {
+      .ui.tiny.modal {
+        width: 95%;
+        margin: 0em 0em 0em -47.5%;
+      }
+    }
+
+    @media only screen and (min-width: 768px) {
+      .ui.tiny.modal {
+        width: 50%;
+        margin: 0em 0em 0em -25%;
+      }
+    }
+
+    @media only screen and (min-width: 992px) {
+      .ui.tiny.modal {
+        width: 300px;
+        margin: 0em 0em 0em -150px;
+      }
+    }
+
+    @media only screen and (min-width: 1200px) {
+      .ui.tiny.modal {
+        width: 600px;
+        margin: 0em 0em 0em -300px;
+      }
+    }
+
+    @media only screen and (min-width: 1920px) {
+      .ui.tiny.modal {
+        width: 600px;
+        margin: 0em 0em 0em -300px;
+      }
+    }
+
     </style>
   </head>
   <body>
@@ -124,7 +165,7 @@
                   No
                 </td>
                 <td>
-                  <span id="resp_no">xxxxxxxxx</span>
+                  <span class="bold" id="resp_no">xxxxxxxxx</span>
                 </td>
               </tr>
               <tr>
@@ -132,7 +173,7 @@
                   Nama
                 </td>
                 <td>
-                  <span id="resp_name">xxxxxxxxx</span>
+                  <span class="bold" id="resp_name">xxxxxxxxx</span>
                 </td>
               </tr>
               <tr>
@@ -140,12 +181,14 @@
                   Tagihan
                 </td>
                 <td>
-                  <span id="resp_bill">xxxxxxxxx</span>
+                  <span class="bold" id="resp_bill">xxxxxxxxx</span>
                 </td>
               </tr>
             </tbody>
           </table>
           <p>
+            <small>*sudah termasuk PPn</small><br />
+            <small>*angka tagihan di luar denda keterlambatan pembayaran</small>
             <h4>Bayar tagihan?</h4>
           </p>
         </div>
