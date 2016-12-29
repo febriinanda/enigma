@@ -22,13 +22,13 @@
                 <label for="type">Pilih salah satu:</label>
                 <div class="field">
                   <div class="ui radio checkbox">
-                    <input type="radio" name="type" checked="" tabindex="0" class="hidden">
+                    <input type="radio" name="type[]" checked="" tabindex="0" class="hidden">
                     <label>No. Telp.</label>
                   </div>
                 </div>
                 <div class="field">
                   <div class="ui radio checkbox">
-                    <input type="radio" name="type" tabindex="0" class="hidden">
+                    <input type="radio" name="type[]" tabindex="0" class="hidden">
                     <label>No. Internet</label>
                   </div>
                 </div>
@@ -98,7 +98,36 @@
       var socket = io();
       socket.temp = {};
       $('form').submit(function(){
-        socket.emit('query info', $('#m').val());
+        //socket.emit('query info', $('#m').val());
+        var $form = $('form');
+        var formData = {};
+
+        // Check input for type. 0 = Telp, 1 = Internet
+        type = $form.form('get value', 'type')[0] == "on" ? 0 : 1;
+
+        formData = {
+          type : type,
+          number : $form.form('get value', 'id_pelanggan')
+        }
+
+        var url = "";
+        if(formData.type === 0){
+          url = '/query/byPhone'
+        }else{
+          url = '/query/byInternet'
+        }
+
+        $.ajax({
+          method: 'GET',
+          data: formData,
+          url: url,
+          success: function(result){
+            console.log("Result:",result)
+          },
+          error: function(err){
+            console.log("Error:",err)
+          }
+        });
         $('#m').val('');
         return false;
       });
