@@ -75,21 +75,19 @@
       <div class="ui centered grid">
         <div class="twelve wide column">
           <form class="ui large form">
-            <div class="inline fields">
-              <label for="type">Pilih salah satu:</label>
-              <div class="field">
-                <div class="ui radio checkbox">
-                  <input type="radio" name="type" checked="" tabindex="0" class="hidden">
-                  <label>No. Telepon</label>
+<div class="inline fields">
+                <label for="type">Pilih salah satu:</label>
+                <div class="field">
+                  <div class="ui radio checkbox">
+                    <input type="radio" name="type[]" checked="" tabindex="0" class="hidden">
+                    <label>No. Telp.</label>
+                  </div>
                 </div>
-              </div>
-              <div class="field">
-                <div class="ui radio checkbox">
-                  <input type="radio" name="type" tabindex="0" class="hidden">
-                  <label>No. Internet</label>
-                </div>
-              </div>
-            </div>
+                <div class="field">
+                  <div class="ui radio checkbox">
+                    <input type="radio" name="type[]" tabindex="0" class="hidden">
+                    <label>No. Internet</label>
+                  </div>
             <div class="field">
               <label>No. Telepon / Internet:</label>
               <div class="ui input">
@@ -167,7 +165,36 @@
       socket.temp = {};
 
       $('form').submit(function(){
-        socket.emit('query info', $('#m').val());
+        //socket.emit('query info', $('#m').val());
+        var $form = $('form');
+        var formData = {};
+
+        // Check input for type. 0 = Telp, 1 = Internet
+        type = $form.form('get value', 'type')[0] == "on" ? 0 : 1;
+
+        formData = {
+          type : type,
+          number : $form.form('get value', 'id_pelanggan')
+        }
+
+        var url = "";
+        if(formData.type === 0){
+          url = '/query/byPhone'
+        }else{
+          url = '/query/byInternet'
+        }
+
+        $.ajax({
+          method: 'GET',
+          data: formData,
+          url: url,
+          success: function(result){
+            console.log("Result:",result)
+          },
+          error: function(err){
+            console.log("Error:",err)
+          }
+        });
         $('#m').val('');
         openModal();
         return false;

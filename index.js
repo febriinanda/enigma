@@ -2,13 +2,14 @@ var app = require('express')();
 var express = require('express');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var query = require('./query')
 
 // Register static files here
 app.use("/semantic",express.static(__dirname + "/semantic"));
 app.use("/images",express.static(__dirname + "/images"));
 
-var nameList = ["Zulhendri","Ryan Ade Hidayat", "Anoki Antoni", "Fajar Lazuardi"];
-var billList = [115000, 250000, 165000, 300000, 450000, 225000];
+app.use("/semantic",express.static(__dirname + "/semantic"));
+app.use('/query', query)
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
@@ -21,11 +22,6 @@ app.get('/client', function(req, res){
 io.on('connection', function(socket){
   socket.on('query info', function(msg){
     var dummy = {};
-    dummy = {
-      no: msg,
-      name: nameList[Math.floor(Math.random() * nameList.length)],
-      bill: billList[Math.floor(Math.random() * billList.length)]
-    }
     socket.emit('query result', dummy);
   });
 
