@@ -110,10 +110,10 @@
       </div>
 
     </div>
-    <div class="ui tiny modal">
+    <div class="ui tiny modal confirm">
       <i class="close icon"></i>
       <div class="ui blue header">
-        Info tagihan
+        INFO TAGIHAN
       </div>
       <div class="content">
         <div class="description">
@@ -154,12 +154,29 @@
         <div id="confirmBtn" class="ui blue approve button">
           Ya
         </div>
-        <div class="ui red deny button">
+        <div id="cancelBtn" class="ui red deny button">
           Tidak
         </div>
       </div>
     </div>
+    <div class="ui tiny modal warning">
+      <i class="close icon"></i>
+      <div class="ui red header">
+        NOTIFIKASI
+      </div>
+      <div class="content">
+        <div class="description">
+          <div id="warning_word">
 
+          </div>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="ui blue deny button">
+          Kembali
+        </div>
+      </div>
+    </div>
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 
     <script>
@@ -191,14 +208,13 @@
           data: formData,
           url: url,
           success: function(result){
-            console.log("Result:",result)
+            queryTagihan(result[0]);
           },
           error: function(err){
-            console.log("Error:",err)
+
+            openWarningModal(0);
           }
         });
-        $('#m').val('');
-        openModal();
         return false;
 
       });
@@ -206,9 +222,7 @@
       socket.on('query result', function(resp){
         $("#info_tagihan").show();
         console.log("Result", resp);
-        $("#resp_no").text(resp.no);
-        $("#resp_name").text(resp.name);
-        $("#resp_bill").text(resp.bill);
+
         socket.temp = resp;
       });
 
@@ -217,18 +231,60 @@
         $('.ui.radio.checkbox').checkbox();
 
         $('#confirmBtn').click(function(){
-          $("#info_tagihan").hide();
           socket.emit('user confirm',socket.temp);
         });
 
         $('#cancelBtn').click(function(){
-          $("#info_tagihan").hide();
+          openWarningModal(1);
         });
 
       });
 
-      function openModal(){
-        $('.ui.modal').modal('show');
+      function openModal(data){
+        socket.temp = data;
+        $("#resp_no").text(data.no);
+        $("#resp_name").text(data.name);
+        $("#resp_bill").text(data.total);
+        $('.ui.modal.confirm').modal('show');
+      }
+
+      function openWarningModal(type){
+        var line1, line2, lineBtn;
+        if (type === 0){
+          line1 = 'Data tidak ditemukan';
+          line2 = 'Silahkan periksa kembali nomor telepon / internet Anda';
+          lineBtn = "Kembali";
+        }else{
+          line1 = 'Terima kasih sudah menggunakan layanan Drive-Thru Payment';
+          line2 = 'Silahkan melakukan pembayaran sebelum tanggal 20 setiap bulannya';
+          lineBtn = "Tutup";
+          $('#m').val('');
+        }
+
+        $("#warning_word").html("").append(line1).append($('<br />')).append(line2);
+        $(".ui.blue.deny.button").text(lineBtn);
+
+        $('.ui.modal.warning').modal('show');
+      }
+
+      function queryTagihan(pelanggan){
+        $.ajax({
+          method: 'GET',
+          data: {ncli: pelanggan.NCLI},
+          url: '/query/tagihan',
+          success: function(result){
+            var bill = {};
+            bill = {
+              no : pelanggan.NCLI,
+              name : pelanggan.NAMA,
+              total : result[0].total || 0
+            }
+            openModal(bill);
+          },
+          error: function(err){
+            openWarningModal(1);
+          }
+        });
       }
     </script>
   </body>
