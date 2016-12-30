@@ -232,6 +232,7 @@
 
         $('#confirmBtn').click(function(){
           socket.emit('user confirm',socket.temp);
+          openWarningModal(9);
         });
 
         $('#cancelBtn').click(function(){
@@ -250,15 +251,23 @@
 
       function openWarningModal(type){
         var line1, line2, lineBtn;
-        if (type === 0){
-          line1 = 'Data tidak ditemukan';
-          line2 = 'Silahkan periksa kembali nomor telepon / internet Anda';
-          lineBtn = "Kembali";
-        }else{
-          line1 = 'Terima kasih sudah menggunakan layanan Drive-Thru Payment';
-          line2 = 'Silahkan melakukan pembayaran sebelum tanggal 20 setiap bulannya';
-          lineBtn = "Tutup";
-          $('#m').val('');
+        switch(type){
+          case 0:
+            line1 = 'Data tidak ditemukan.';
+            line2 = 'Silahkan periksa kembali nomor telepon / internet Anda.';
+            lineBtn = "Kembali";
+            break;
+          case 1:
+            line1 = 'Terima kasih sudah menggunakan layanan Drive-Thru Payment.';
+            line2 = 'Silahkan melakukan pembayaran sebelum tanggal 20 setiap bulannya.';
+            lineBtn = "Tutup";
+            $('#m').val('');
+            break;
+          default:
+            line1 = 'Terima kasih.';
+            line2 = 'Silakan menuju ke loket pembayaran kami.';
+            lineBtn = "Tutup";
+            $('#m').val('');
         }
 
         $("#warning_word").html("").append(line1).append($('<br />')).append(line2);
