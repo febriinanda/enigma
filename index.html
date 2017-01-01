@@ -275,8 +275,7 @@
         $('.ui.radio.checkbox').checkbox();
 
         $('#confirmBtn').click(function(){
-          socket.emit('user confirm',socket.temp);
-          openWarningModal(9);
+          custConfirm(socket.temp);
         });
 
         $('#cancelBtn').click(function(){
@@ -337,6 +336,19 @@
           error: function(err){
             openWarningModal(1);
           }
+        });
+      }
+
+      function custConfirm(data){
+        console.log("custConfirm", data);
+        $.ajax({
+          url:'/query/tagihanUpdate',
+          data: {id: data.no, status: 9, oldStatus: 0},
+          success: function(resp){
+            socket.emit('user confirm',data);
+            openWarningModal(9);
+          },
+          error: function(){}
         });
       }
     </script>

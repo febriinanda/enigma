@@ -3,9 +3,12 @@
   <head>
     <title>Client</title>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
     <script src="/semantic/dist/semantic.min.js"></script>
+    <script src="/js/moment.min.js"></script>
 
     <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" />
     <style>
     .container{
       margin-top: 2%;
@@ -18,7 +21,28 @@
       <h3 class="ui blue header">Prototype Realtime Notification</h3>
       <div class="ui two column grid">
         <div class="column">
+          <table id="infoTable" class="ui fixed single line table hover" width="100%"></table>
+        </div>
+        <div class="column">
           <div id="messages"></div>
+        </div>
+      </div>
+    </div>
+    <div class="ui tiny modal warning">
+      <i class="close icon"></i>
+      <div class="ui red header">
+        NOTIFIKASI
+      </div>
+      <div class="content">
+        <div class="description">
+          <div id="warning_word">
+
+          </div>
+        </div>
+      </div>
+      <div class="actions">
+        <div class="ui blue deny button">
+          Kembali
         </div>
       </div>
     </div>
@@ -29,21 +53,115 @@
       var socket = io();
       socket.on('user accept', function(msg){
         console.log("msg", msg);
-        var date = new Date();
-        $('#messages')
-        .append($('<div>').addClass("ui message")
-          .append($('<i>').addClass("close icon"))
-          .append($('<div>').addClass("header").text("No: "+ msg.no))
-          .append($('<p>').text("Name: "+msg.name+", Tagihan: "+msg.total))
-        );
+        loadData();
       });
 
       $(document).ready(function(){
         $('.close').click(function() {
             $(this).closest('.message').transition('fade');
-          })
-        ;
+          });
+
+          $('#infoTable').DataTable( {
+              data: [],
+              columns: [
+                  { title: "NCLI", data: "NCLI"},
+                  { title: "Nama", data: "NAMA" },
+                  { title: "Total", data: "TOTAL" },
+                  { title: "Tgl. Pembayaran", data: "TGL_BAYAR", render: function(data, type, full, meta){
+                    return moment(data).format("DD MMMM YYYY, h:mm:ss a");
+                  } },
+                  { title: "Status", data: "STATUS", render: function(data, type, full, meta){
+                    var status;
+                    if(data == 1){
+                        status = "Confirmed";
+                    }else{
+                        status = "Accepted";
+                    }
+                    return status;
+                  }}
+              ]
+          } );
+
+          loadData();
       });
+
+      function loadData(){
+        var infoTable = $('#infoTable').DataTable();
+
+        $.ajax({
+          url: '/query/history',
+          method: 'GET',
+          success: function(resp){
+            loadAcceptedData(resp);
+            infoTable.clear();
+            infoTable.rows.add(resp).draw();
+          },
+          error: function(){}
+        });
+      }
+
+      function loadAcceptedData(data){
+        $("#messages").html("");
+        $.each(data, function(key, val){
+
+          if(val.STATUS == 9){
+            $('#messages')
+            .append($('<div>').addClass("ui message")
+              .append($('<i>').addClass("close icon"))
+              .append($('<div>').addClass("header").text("No: "+ val.NCLI))
+              .append($('<p>').text("Name: "+val.NAMA+", Tagihan: "+val.TOTAL))
+              .append($('<button>').addClass("ui blue button").text("Confirm").on('click', function(){
+                operatorConfirm(val.NCLI);
+              }))
+            );
+          }
+
+        });
+      }
+
+      function operatorConfirm(id){
+        $.ajax({
+          url:'/query/tagihanUpdate',
+          data: {id: id, status: 1, oldStatus: 9},
+          success: function(resp){
+            loadData();
+            openWarningModal(2);
+          },
+          error: function(){}
+        });
+      }
+
+      function openWarningModal(type){
+        var line1, line2, lineBtn;
+        switch(type){
+          case 0:
+            line1 = 'Data tidak ditemukan.';
+            line2 = 'Silahkan periksa kembali nomor telepon / internet Anda.';
+            lineBtn = "Kembali";
+            break;
+          case 1:
+            line1 = 'Terima kasih sudah menggunakan layanan Drive-Thru Payment.';
+            line2 = 'Silahkan melakukan pembayaran sebelum tanggal 20 setiap bulannya.';
+            lineBtn = "Tutup";
+            $('#m').val('');
+            break;
+          case 2:
+            line1 = 'Terima kasih.';
+            line2 = 'Data sudah diperbarui.';
+            lineBtn = "Tutup";
+            break;
+          default:
+            line1 = 'Terima kasih.';
+            line2 = 'Silakan menuju ke loket pembayaran kami.';
+            lineBtn = "Tutup";
+            $('#m').val('');
+        }
+
+        $("#warning_word").html("").append(line1).append($('<br />')).append(line2);
+        $(".ui.blue.deny.button").text(lineBtn);
+
+        $('.ui.modal.warning').modal('show');
+      }
     </script>
   </body>
 </html>

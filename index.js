@@ -7,8 +7,7 @@ var query = require('./query')
 // Register static files here
 app.use("/semantic",express.static(__dirname + "/semantic"));
 app.use("/images",express.static(__dirname + "/images"));
-
-app.use("/semantic",express.static(__dirname + "/semantic"));
+app.use("/js",express.static(__dirname + "/js"));
 app.use('/query', query)
 
 app.get('/', function(req, res){
