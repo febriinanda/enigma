@@ -94,7 +94,8 @@
           success: function(resp){
             loadAcceptedData(resp);
             infoTable.clear();
-            infoTable.rows.add(resp).draw();
+            infoTable.rows.add(resp);
+            infoTable.order( [ 4, 'desc' ] ).draw();
           },
           error: function(){}
         });
