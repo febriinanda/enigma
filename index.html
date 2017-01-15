@@ -7,6 +7,9 @@
 
     <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css" />
     <style>
+    body {
+      background-color: #F2F2F2; }
+
     .container{
       margin-top: 2%;
     }
@@ -95,6 +98,20 @@
         margin: 0em 0em 0em -300px;
       }
     }
+
+    /* Footer */
+    @media screen and (max-height: 480px) and (max-width: 1366px) {
+      .footer {
+        display: none; } }
+
+    @media screen and (max-height: 600px) and (max-width: 1280px) {
+      .footer {
+        display: none; } }
+
+    @media screen and (max-height: 1080px) and (max-width: 2560px) {
+      .footer {
+        display: none; } }
+
 
     </style>
   </head>
@@ -273,6 +290,7 @@
       $(document).ready(function(){
         $("#info_tagihan").hide();
         $('.ui.radio.checkbox').checkbox();
+        $("#m").focus();
 
         $('#confirmBtn').click(function(){
           custConfirm(socket.temp);
