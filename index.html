@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>Stand Monitor</title>
-    
+
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script src="/semantic/dist/semantic.min.js"></script>
 
@@ -16,7 +16,7 @@
     }
 
     p.prime{
-      font-size: 2.5rem;
+      font-size: 2em;
       font-weight: bold;
       text-align: center;
       margin: 0 0 0.7em;
@@ -24,7 +24,7 @@
     }
 
     p.secondary{
-      font-size: 2rem;
+      font-size: 1.75em;
       text-align: center;
       margin: 0 0 0.7em;
       line-height: 1.25em;
@@ -153,7 +153,7 @@
             <div class="field">
               <label>No. Telepon / Internet:</label>
               <div class="ui input">
-                <input id="m" type="text" name="id_pelanggan" placeholder="073XXXXX / 111XXXXXX" />
+                <input id="m" type="number" name="id_pelanggan" placeholder="073XXXXX / 111XXXXXX" />
               </div>
             </div>
             <div class="field">
@@ -292,7 +292,7 @@
       $(document).ready(function(){
         $("#info_tagihan").hide();
         $('.ui.radio.checkbox').checkbox();
-        $("#m").focus();
+        $("#m").focus().click();
 
         $('#confirmBtn').click(function(){
           custConfirm(socket.temp);
