@@ -7,12 +7,15 @@
 
     <link rel="stylesheet" type="text/css" href="semantic/dist/semantic.min.css" />
     <style>
+    body {
+      background-color: #F2F2F2; }
+
     .container{
       margin-top: 2%;
     }
 
     p.prime{
-      font-size: 2.5rem;
+      font-size: 1.5em;
       font-weight: bold;
       text-align: center;
       margin: 0 0 0.7em;
@@ -20,7 +23,7 @@
     }
 
     p.secondary{
-      font-size: 2rem;
+      font-size: 1em;
       text-align: center;
       margin: 0 0 0.7em;
       line-height: 1.25em;
@@ -96,6 +99,19 @@
       }
     }
 
+    /* Footer */
+    @media only screen and (max-height: 495px) and (max-width: 987px) {
+      .footer {
+        display: none; } }
+
+    @media only screen and (max-height: 460px) and (max-width: 1280px) {
+      .footer {
+        display: none; } }
+
+    @media only screen and (max-height: 470px) and (max-width: 1366px) {
+      .footer {
+        display: none; } }
+
     </style>
   </head>
   <body>
@@ -134,7 +150,7 @@
             <div class="field">
               <label>No. Telepon / Internet:</label>
               <div class="ui input">
-                <input id="m" type="text" name="id_pelanggan" placeholder="073XXXXX / 111XXXXXX" />
+                <input id="m" type="number" name="id_pelanggan" placeholder="073XXXXX / 111XXXXXX" />
               </div>
             </div>
             <div class="field">
@@ -273,6 +289,7 @@
       $(document).ready(function(){
         $("#info_tagihan").hide();
         $('.ui.radio.checkbox').checkbox();
+        $("#m").focus().click();
 
         $('#confirmBtn').click(function(){
           custConfirm(socket.temp);
