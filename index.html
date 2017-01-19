@@ -148,10 +148,7 @@
 
     </style>
   </head>
-  <body class="blurring">
-    <div class="ui dimmer">
-      <div class="ui text loader">Silahkan Tunggu...</div>
-    </div>
+  <body>
     <div class="container">
       <div class="ui three column centered grid">
         <div class="three wide column">
@@ -288,7 +285,6 @@
       socket.temp = {};
 
       $('form').submit(function(){
-        $('.dimmer').dimmer('show');
         //socket.emit('query info', $('#m').val());
         var $form = $('form');
         var formData = {};
@@ -332,7 +328,6 @@
       });
 
       $(document).ready(function(){
-
         $("#info_tagihan").hide();
         $('.ui.radio.checkbox').checkbox();
         $("#m").focus().click();
@@ -348,14 +343,11 @@
       });
 
       function openModal(data){
-
         socket.temp = data;
         $("#resp_no").text(data.no);
         $("#resp_name").text(data.name);
         $("#resp_bill").text(data.total);
-        setTimeout(hideDimmer, 2000);
-
-
+        $('.ui.modal.confirm').modal('show');
       }
 
       function openWarningModal(type){
@@ -416,11 +408,6 @@
           },
           error: function(){}
         });
-      }
-
-      function hideDimmer(){
-        $('.dimmer').dimmer('hide');
-        $('.ui.modal.confirm').modal('show');
       }
     </script>
   </body>
